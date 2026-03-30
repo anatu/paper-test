@@ -10,8 +10,8 @@ Academic paper authoring workspace. Papers are written in LaTeX and stored in `p
 
 - **Compile a paper:** `pdflatex -interaction=nonstopmode papers/<name>.tex` (run twice for references)
 - **Full compilation with bibtex:** `pdflatex <name>.tex && bibtex <name> && pdflatex <name>.tex && pdflatex <name>.tex`
-- **Live PDF viewer:** `python visualize.py papers/<name>.tex [--port PORT]`
-- **View existing PDF:** `python visualize.py papers/<name>.pdf`
+- **Live PDF viewer:** `python visualize_latex.py papers/<name>.tex [--port PORT]`
+- **View existing PDF:** `python visualize_latex.py papers/<name>.pdf`
 - **Fetch arXiv papers:** `python fetch_arxiv.py "<query>" --max N [--category cs.CL] [--out data/arxiv]`
 
 ## Architecture
@@ -20,7 +20,7 @@ Academic paper authoring workspace. Papers are written in LaTeX and stored in `p
 - `references/` — Style guides that **must be read before drafting** (structure, style, citations, LaTeX conventions)
 - `data/` — Downloaded arXiv papers (LaTeX source) for reference; `data/arxiv/manifest.tsv` tracks fetched papers
 - `fetch_arxiv.py` — Search arXiv and download paper LaTeX source into `data/arxiv/<id>/`
-- `visualize.py` — Local dev server that compiles `.tex` and serves a live-reloading PDF viewer in browser
+- `visualize_latex.py` — Local dev server that compiles `.tex` and serves a live-reloading PDF viewer in browser
 - `.claude/skills/` — Custom skills (e.g., `wrap-up.md` for session end-of-day checklist)
 
 ## Skills

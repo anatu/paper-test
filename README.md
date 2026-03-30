@@ -10,7 +10,7 @@ This project explores how far AI-assisted authoring can go for producing publica
 - **`references/`** — Curated style guides covering paper structure, prose style, citation conventions, and LaTeX best practices. These serve as grounding context for the LLM during drafting.
 - **`data/`** — Downloaded arXiv papers (LaTeX source) used as reference material
 - **`fetch_arxiv.py`** — Script to search and download arXiv papers with their LaTeX source
-- **`visualize.py`** — A local dev server that compiles `.tex` files and serves a live-reloading PDF viewer in the browser
+- **`visualize_latex.py`** — A local dev server that compiles `.tex` files and serves a live-reloading PDF viewer in the browser
 
 ## Quick start
 
@@ -19,7 +19,7 @@ This project explores how far AI-assisted authoring can go for producing publica
 python fetch_arxiv.py "large language models" --max 5
 
 # View a paper with live reloading
-python visualize.py papers/<name>.tex
+python visualize_latex.py papers/<name>.tex
 
 # Or compile manually
 pdflatex -interaction=nonstopmode papers/<name>.tex

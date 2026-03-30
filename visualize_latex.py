@@ -3,9 +3,9 @@
 LaTeX Paper Viewer — compile a .tex file and serve a live-reloading PDF viewer.
 
 Usage:
-    python visualize.py paper.tex
-    python visualize.py paper.tex --port 8080
-    python visualize.py paper.pdf          # skip compilation, just view
+    python visualize_latex.py paper.tex
+    python visualize_latex.py paper.tex --port 8080
+    python visualize_latex.py paper.pdf          # skip compilation, just view
 """
 
 import argparse

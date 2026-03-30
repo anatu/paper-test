@@ -28,5 +28,16 @@ def sample_dangling_ref_tex() -> Path:
 
 
 @pytest.fixture
+def sample_statbug_tex() -> Path:
+    return FIXTURES_DIR / "sample_statbug.tex"
+
+
+@pytest.fixture
+def sample_overclaim_tex() -> Path:
+    return FIXTURES_DIR / "sample_overclaim.tex"
+
+
+@pytest.fixture
 def default_config() -> PipelineConfig:
-    return PipelineConfig(anthropic_api_key="test-key-not-real")
+    """Config without a real API key — LLM-based checks degrade gracefully."""
+    return PipelineConfig(anthropic_api_key="")

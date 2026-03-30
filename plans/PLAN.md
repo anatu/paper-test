@@ -16,7 +16,7 @@ paper-test/                         # repo root — existing files untouched
 ├── README.md                       # repo overview
 ├── PLAN.md                         # this file
 ├── fetch_arxiv.py                  # ★ EXISTING — ArXiv search + LaTeX source download
-├── visualize.py                    # ★ EXISTING — live-reloading LaTeX→PDF viewer
+├── visualize_latex.py                    # ★ EXISTING — live-reloading LaTeX→PDF viewer
 ├── papers/                         # ★ EXISTING — LaTeX source files for authored papers
 ├── references/                     # ★ EXISTING — style/structure/citation/LaTeX guides
 ├── data/                           # ★ EXISTING — downloaded ArXiv papers (LaTeX source)
@@ -28,7 +28,7 @@ paper-test/                         # repo root — existing files untouched
 - **`fetch_arxiv.py`** already implements ArXiv API search, source download, tar/gz extraction, and manifest tracking. The pipeline reuses it directly (imported as a module) rather than creating a separate `external/arxiv_api.py`.
 - **`data/arxiv/`** is the existing store for downloaded ArXiv paper source. Layer 3's claim corpus is built from papers already in `data/arxiv/` (fetched via `fetch_arxiv.py`), plus any additional papers fetched during corpus building.
 - **`papers/`** contains the user's own authored papers — these can also be fed into the pipeline for self-verification.
-- **`visualize.py`** is unrelated to the pipeline but coexists at the repo root.
+- **`visualize_latex.py`** is unrelated to the pipeline but coexists at the repo root.
 
 The verification pipeline is added as a Python package under `papercheck/`, keeping it cleanly separated from the existing authoring tools.
 
