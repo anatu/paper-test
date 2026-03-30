@@ -28,14 +28,24 @@ consolidated report at the end.
    at the workspace root or in code directories, move them to the docs folder
    if they belong there
 
+**README update:**
+6. Review README.md against changes made during the session. The README is a
+   live snapshot of current repo state — not aspirational. Update it to reflect:
+   - New tools, directories, or scripts added
+   - Changed file names or moved files
+   - Current status of in-progress work (e.g., which pipeline phases are done)
+   - Any shifted directions or abandoned approaches
+   Do not add sections for planned-but-unbuilt features. Keep it honest about
+   what exists now.
+
 **Deploy:**
-6. Check if the project has a deploy skill or script
-7. If one exists, run it
-8. If not, skip deployment entirely — do not ask about manual deployment
+7. Check if the project has a deploy skill or script
+8. If one exists, run it
+9. If not, skip deployment entirely — do not ask about manual deployment
 
 **Task cleanup:**
-9. Check the task list for in-progress or stale items
-10. Mark completed tasks as done, flag orphaned ones
+10. Check the task list for in-progress or stale items
+11. Mark completed tasks as done, flag orphaned ones
 
 ## Phase 2: Remember It
 
