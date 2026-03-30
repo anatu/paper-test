@@ -146,6 +146,88 @@ def clear():
     console.print(f"Cleared {count} expired entries.")
 
 
+@main.group()
+def reward():
+    """Reward model commands — fetch, process, train, eval."""
+    pass
+
+
+@reward.command()
+@click.option("--venue", default="iclr", help="Venue name (e.g. iclr, neurips)")
+@click.option("--years", default="2024-2025", help="Year range (e.g. 2024-2025)")
+def fetch(venue: str, years: str):
+    """Fetch peer review data from OpenReview."""
+    try:
+        from papercheck.reward_model.data_ingestion import OpenReviewScraper
+    except ImportError as e:
+        console.print(f"[red]Missing dependency:[/red] {e}")
+        sys.exit(1)
+
+    import os
+    scraper = OpenReviewScraper(
+        username=os.environ.get("OPENREVIEW_USERNAME", ""),
+        password=os.environ.get("OPENREVIEW_PASSWORD", ""),
+        cache_dir=Path("data/openreview"),
+    )
+
+    start_year, end_year = _parse_year_range(years)
+    for year in range(start_year, end_year + 1):
+        console.print(f"Fetching {venue} {year}...")
+        data = scraper.fetch_venue(venue, year)
+        console.print(f"  Papers: {len(data.papers)}, Reviews: {data.total_reviews}")
+
+
+@reward.command()
+@click.option("--data-dir", default="data/openreview", help="Raw data directory")
+@click.option("--output", default="data/openreview/processed", help="Output directory")
+def process(data_dir: str, output: str):
+    """Process raw OpenReview data into training-ready format."""
+    console.print("[yellow]Data processing requires fetched data.[/yellow]")
+    console.print(f"Would process data from {data_dir} -> {output}")
+
+
+@reward.command(name="train")
+@click.option(
+    "--config",
+    "config_path",
+    default="papercheck/reward_model/configs/small.yaml",
+    help="Training config YAML file",
+)
+def train_cmd(config_path: str):
+    """Train the reward model."""
+    try:
+        from papercheck.reward_model.train import RewardModelTrainer, TrainingConfig
+    except ImportError as e:
+        console.print(f"[red]Missing dependency:[/red] {e}")
+        sys.exit(1)
+
+    config = TrainingConfig.from_yaml(config_path)
+    console.print(f"Training with config: {config_path}")
+    console.print(f"  Backbone: {config.backbone}")
+    console.print(f"  Device: {config.device}")
+    console.print(f"  Epochs: {config.num_epochs}")
+    console.print("[yellow]Training requires processed data. Run `papercheck reward process` first.[/yellow]")
+
+
+@reward.command(name="eval")
+@click.option("--checkpoint", default="models/reward_model/checkpoint_best.pt", help="Model checkpoint")
+def eval_cmd(checkpoint: str):
+    """Evaluate a trained reward model."""
+    if not Path(checkpoint).exists():
+        console.print(f"[red]Checkpoint not found:[/red] {checkpoint}")
+        sys.exit(1)
+    console.print(f"Evaluating checkpoint: {checkpoint}")
+
+
+def _parse_year_range(years: str) -> tuple[int, int]:
+    """Parse '2024-2025' into (2024, 2025)."""
+    parts = years.split("-")
+    if len(parts) == 1:
+        y = int(parts[0])
+        return y, y
+    return int(parts[0]), int(parts[1])
+
+
 def _print_summary(report: DiagnosticReport):
     """Print a rich summary table to the console."""
     signal_style = {"pass": "green", "warn": "yellow", "fail": "red"}

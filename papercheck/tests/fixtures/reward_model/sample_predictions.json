@@ -1,0 +1,16 @@
+{
+  "test_paper_001": {
+    "overall": 0.72,
+    "soundness": 0.68,
+    "presentation": 0.55,
+    "contribution": 0.62,
+    "accept_prob": 0.78
+  },
+  "test_paper_002": {
+    "overall": 0.38,
+    "soundness": 0.45,
+    "presentation": 0.58,
+    "contribution": 0.32,
+    "accept_prob": 0.25
+  }
+}

@@ -1,0 +1,185 @@
+{
+  "paper": {
+    "year": null,
+    "venue": null,
+    "doi": null,
+    "urls": []
+  },
+  "title": "Paper With Statistical Errors",
+  "authors": [
+    "Stat Checker"
+  ],
+  "layer_results": [
+    {
+      "layer": 1,
+      "layer_name": "Formal Consistency",
+      "score": 0.39999999999999997,
+      "signal": "warn",
+      "findings": [
+        {
+          "severity": "error",
+          "category": "statistical_error",
+          "message": "Inconsistent p-value: reported p = 0.01, but recomputed p ≈ 0.1441 from t(30) = 1.5",
+          "location": null,
+          "evidence": "t(30) = 1.5, p < 0.01",
+          "suggestion": "Verify the reported test statistic and p-value are correct."
+        },
+        {
+          "severity": "error",
+          "category": "statistical_error",
+          "message": "Inconsistent p-value: reported p = 0.001, but recomputed p ≈ 0.0548 from f(2,45) = 3.1",
+          "location": null,
+          "evidence": "F(2, 45) = 3.1, p = 0.001",
+          "suggestion": "Verify the reported test statistic and p-value are correct."
+        },
+        {
+          "severity": "critical",
+          "category": "impossible_value",
+          "message": "Correlation coefficient outside [-1, 1]: 1.35",
+          "location": null,
+          "evidence": "r = 1.35",
+          "suggestion": null
+        },
+        {
+          "severity": "info",
+          "category": "unreferenced_label",
+          "message": "Label 'sec:results' is defined but never referenced",
+          "location": null,
+          "evidence": null,
+          "suggestion": null
+        },
+        {
+          "severity": "info",
+          "category": "unreferenced_label",
+          "message": "Label 'sec:conclusion' is defined but never referenced",
+          "location": null,
+          "evidence": null,
+          "suggestion": null
+        },
+        {
+          "severity": "info",
+          "category": "unreferenced_label",
+          "message": "Label 'sec:intro' is defined but never referenced",
+          "location": null,
+          "evidence": null,
+          "suggestion": null
+        },
+        {
+          "severity": "info",
+          "category": "claim_alignment_skipped",
+          "message": "Claim alignment skipped: no Anthropic API key configured",
+          "location": null,
+          "evidence": null,
+          "suggestion": null
+        }
+      ],
+      "execution_time_seconds": 0.00022912025451660156,
+      "skipped": false,
+      "skip_reason": null
+    },
+    {
+      "layer": 2,
+      "layer_name": "Citation Verification",
+      "score": 0.85,
+      "signal": "pass",
+      "findings": [
+        {
+          "severity": "error",
+          "category": "citation_not_found",
+          "message": "Reference [test2023] could not be verified: \"A paper\" (2023)",
+          "location": null,
+          "evidence": "Test, A. (2023). A paper. Journal, 1-5.\n\\end{thebibliography}\n\n\\end{document}",
+          "suggestion": "Verify that this citation is correct. It may be a preprint not yet indexed, or the title/authors may contain errors."
+        },
+        {
+          "severity": "info",
+          "category": "citation_summary",
+          "message": "Verified 0/1 references via external databases",
+          "location": null,
+          "evidence": null,
+          "suggestion": null
+        },
+        {
+          "severity": "info",
+          "category": "claim_alignment_skipped",
+          "message": "Claim-citation alignment check skipped (no API key)",
+          "location": null,
+          "evidence": null,
+          "suggestion": null
+        },
+        {
+          "severity": "info",
+          "category": "coverage_check_skipped",
+          "message": "Related work coverage check skipped (no API key)",
+          "location": null,
+          "evidence": null,
+          "suggestion": null
+        }
+      ],
+      "execution_time_seconds": 0.035798072814941406,
+      "skipped": false,
+      "skip_reason": null
+    },
+    {
+      "layer": 3,
+      "layer_name": "Cross-Paper Consistency",
+      "score": 1.0,
+      "signal": "pass",
+      "findings": [
+        {
+          "severity": "info",
+          "category": "claim_extraction_skipped",
+          "message": "Claim extraction skipped (no API key or no abstract/intro)",
+          "location": null,
+          "evidence": null,
+          "suggestion": null
+        }
+      ],
+      "execution_time_seconds": 8.106231689453125e-6,
+      "skipped": false,
+      "skip_reason": null
+    },
+    {
+      "layer": 4,
+      "layer_name": "Reproducibility Check",
+      "score": 1.0,
+      "signal": "pass",
+      "findings": [],
+      "execution_time_seconds": 0.16191720962524414,
+      "skipped": true,
+      "skip_reason": "No code repository found for this paper"
+    },
+    {
+      "layer": 5,
+      "layer_name": "Logical Structure",
+      "score": 1.0,
+      "signal": "pass",
+      "findings": [
+        {
+          "severity": "info",
+          "category": "logic_check_skipped",
+          "message": "Logical structure checks skipped (no API key)",
+          "location": null,
+          "evidence": null,
+          "suggestion": null
+        }
+      ],
+      "execution_time_seconds": 9.298324584960938e-6,
+      "skipped": false,
+      "skip_reason": null
+    }
+  ],
+  "composite_score": 0.725,
+  "composite_signal": "pass",
+  "scoring_weights": {
+    "1": 0.35,
+    "2": 0.25,
+    "3": 0.15,
+    "4": 0.1,
+    "5": 0.15
+  },
+  "timestamp": "2026-03-30T14:02:56.588332+00:00",
+  "pipeline_version": "0.1.0",
+  "total_execution_time_seconds": 0.199479,
+  "total_llm_cost_usd": 0.0
+}

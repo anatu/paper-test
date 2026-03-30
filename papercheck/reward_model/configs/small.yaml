@@ -1,0 +1,22 @@
+# Minimal config — CPU-only, fast iteration
+backbone: "allenai/specter2"
+max_length: 256
+batch_size: 4
+gradient_accumulation_steps: 1
+learning_rate: 5.0e-5
+weight_decay: 0.01
+warmup_ratio: 0.1
+lr_scheduler: "cosine"
+num_epochs: 3
+patience: 2
+dropout: 0.1
+loss_weights:
+  overall: 2.0
+  soundness: 1.0
+  presentation: 1.0
+  contribution: 1.0
+  accept_prob: 1.5
+device: "cpu"
+seed: 42
+output_dir: "models/reward_model"
+data_dir: "data/openreview/processed"

@@ -1,0 +1,38 @@
+\documentclass{article}
+\usepackage{amsmath}
+
+\title{A Paper with Correct Citations}
+\author{Test Author}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We survey attention mechanisms in neural machine translation.
+\end{abstract}
+
+\section{Introduction}
+\label{sec:intro}
+
+Neural machine translation has seen rapid progress in recent years.
+The transformer model \cite{vaswani2017} introduced self-attention as the primary mechanism,
+replacing recurrence entirely.
+
+\section{Related Work}
+\label{sec:related}
+
+Bahdanau et al.\ introduced additive attention for sequence-to-sequence models \cite{bahdanau2015}.
+The transformer architecture by Vaswani et al.\ \cite{vaswani2017} uses multi-head self-attention
+to capture dependencies regardless of distance in the input sequence.
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+We surveyed the development of attention mechanisms in NMT.
+
+\begin{thebibliography}{9}
+\bibitem{vaswani2017} Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A.N., Kaiser, L. and Polosukhin, I. (2017). Attention Is All You Need. Advances in Neural Information Processing Systems, 30.
+\bibitem{bahdanau2015} Bahdanau, D., Cho, K. and Bengio, Y. (2015). Neural Machine Translation by Jointly Learning to Align and Translate. Proceedings of ICLR.
+\end{thebibliography}
+
+\end{document}

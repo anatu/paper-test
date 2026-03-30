@@ -28,9 +28,9 @@ def compute_composite_score(
 
     score = sum(r.score * w for r, w in active) / total_weight
 
-    if score >= 0.6:
+    if score >= 0.7:
         signal = "pass"
-    elif score >= 0.3:
+    elif score >= 0.4:
         signal = "warn"
     else:
         signal = "fail"

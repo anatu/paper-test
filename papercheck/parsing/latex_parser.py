@@ -69,13 +69,56 @@ def _extract_bibitem_references(source: str) -> list[Reference]:
     pattern = re.compile(r"\\bibitem\{([^}]*)\}\s*(.*?)(?=\\bibitem|\Z)", re.DOTALL)
     refs: list[Reference] = []
     for m in pattern.finditer(source):
+        raw = m.group(2).strip()[:500]
+        title, authors, year = _parse_bibitem_text(raw)
         refs.append(
             Reference(
                 key=m.group(1).strip(),
-                raw_text=m.group(2).strip()[:500],
+                title=title,
+                authors=authors,
+                year=year,
+                raw_text=raw,
             )
         )
     return refs
+
+
+def _parse_bibitem_text(raw: str) -> tuple[str | None, list[str], int | None]:
+    """Extract title, authors, and year from a raw bibitem text string.
+
+    Common formats:
+      Author, A. and Author, B. (2023). Title Here. Venue, pages.
+      Author, A., Author, B., 2023. Title Here. Venue.
+    """
+    # Extract year
+    year_match = re.search(r"\((\d{4})\)|,\s*(\d{4})\b", raw)
+    year = int(year_match.group(1) or year_match.group(2)) if year_match else None
+
+    # Try to extract title: text after "(YYYY)." or ", YYYY." up to next period
+    title = None
+    if year_match:
+        after_year = raw[year_match.end():]
+        # Strip leading punctuation/whitespace
+        after_year = re.sub(r"^[\s.,)]+", "", after_year)
+        # Title is typically the next sentence (up to period)
+        title_match = re.match(r"(.+?)(?:\.|$)", after_year)
+        if title_match:
+            candidate = title_match.group(1).strip()
+            if len(candidate) > 5:  # Skip very short fragments
+                title = candidate
+
+    # Extract authors: text before the year
+    authors: list[str] = []
+    if year_match:
+        before_year = raw[:year_match.start()].strip().rstrip(",").rstrip(".")
+        # Split on " and " or ", " (but not within names like "Smith, J.")
+        author_parts = re.split(r"\s+and\s+", before_year)
+        for part in author_parts:
+            part = part.strip().rstrip(",")
+            if part:
+                authors.append(part)
+
+    return title, authors, year
 
 
 def _extract_equations(source: str) -> list[EquationRef]:

@@ -1,0 +1,177 @@
+{
+  "paper": {
+    "year": null,
+    "venue": null,
+    "doi": null,
+    "urls": []
+  },
+  "title": "Paper With Dangling References",
+  "authors": [
+    "Test Author"
+  ],
+  "layer_results": [
+    {
+      "layer": 1,
+      "layer_name": "Formal Consistency",
+      "score": 0.24999999999999992,
+      "signal": "fail",
+      "findings": [
+        {
+          "severity": "error",
+          "category": "dangling_reference",
+          "message": "Reference \\ref{fig:nonexistent} has no matching \\label{fig:nonexistent}",
+          "location": null,
+          "evidence": null,
+          "suggestion": "Add \\label{fig:nonexistent} to the target element, or fix the reference key."
+        },
+        {
+          "severity": "error",
+          "category": "dangling_reference",
+          "message": "Reference \\ref{tab:missing} has no matching \\label{tab:missing}",
+          "location": null,
+          "evidence": null,
+          "suggestion": "Add \\label{tab:missing} to the target element, or fix the reference key."
+        },
+        {
+          "severity": "error",
+          "category": "dangling_reference",
+          "message": "Reference \\ref{sec:phantom} has no matching \\label{sec:phantom}",
+          "location": null,
+          "evidence": null,
+          "suggestion": "Add \\label{sec:phantom} to the target element, or fix the reference key."
+        },
+        {
+          "severity": "error",
+          "category": "dangling_reference",
+          "message": "Reference \\ref{eq:ghost} has no matching \\label{eq:ghost}",
+          "location": null,
+          "evidence": null,
+          "suggestion": "Add \\label{eq:ghost} to the target element, or fix the reference key."
+        },
+        {
+          "severity": "error",
+          "category": "dangling_reference",
+          "message": "Reference \\ref{sec:results_gone} has no matching \\label{sec:results_gone}",
+          "location": null,
+          "evidence": null,
+          "suggestion": "Add \\label{sec:results_gone} to the target element, or fix the reference key."
+        },
+        {
+          "severity": "info",
+          "category": "unreferenced_label",
+          "message": "Label 'sec:method' is defined but never referenced",
+          "location": null,
+          "evidence": null,
+          "suggestion": null
+        },
+        {
+          "severity": "info",
+          "category": "claim_alignment_skipped",
+          "message": "Claim alignment skipped: no Anthropic API key configured",
+          "location": null,
+          "evidence": null,
+          "suggestion": null
+        }
+      ],
+      "execution_time_seconds": 0.0001499652862548828,
+      "skipped": false,
+      "skip_reason": null
+    },
+    {
+      "layer": 2,
+      "layer_name": "Citation Verification",
+      "score": 1.0,
+      "signal": "pass",
+      "findings": [
+        {
+          "severity": "info",
+          "category": "existence_check_error",
+          "message": "Citation existence check encountered an error: RetryError",
+          "location": null,
+          "evidence": null,
+          "suggestion": null
+        },
+        {
+          "severity": "info",
+          "category": "claim_alignment_skipped",
+          "message": "Claim-citation alignment check skipped (no API key)",
+          "location": null,
+          "evidence": null,
+          "suggestion": null
+        },
+        {
+          "severity": "info",
+          "category": "coverage_check_skipped",
+          "message": "Related work coverage check skipped (no API key)",
+          "location": null,
+          "evidence": null,
+          "suggestion": null
+        }
+      ],
+      "execution_time_seconds": 3.423949956893921,
+      "skipped": false,
+      "skip_reason": null
+    },
+    {
+      "layer": 3,
+      "layer_name": "Cross-Paper Consistency",
+      "score": 1.0,
+      "signal": "pass",
+      "findings": [
+        {
+          "severity": "info",
+          "category": "claim_extraction_skipped",
+          "message": "Claim extraction skipped (no API key or no abstract/intro)",
+          "location": null,
+          "evidence": null,
+          "suggestion": null
+        }
+      ],
+      "execution_time_seconds": 0.000015974044799804688,
+      "skipped": false,
+      "skip_reason": null
+    },
+    {
+      "layer": 4,
+      "layer_name": "Reproducibility Check",
+      "score": 1.0,
+      "signal": "pass",
+      "findings": [],
+      "execution_time_seconds": 0.10712194442749023,
+      "skipped": true,
+      "skip_reason": "No code repository found for this paper"
+    },
+    {
+      "layer": 5,
+      "layer_name": "Logical Structure",
+      "score": 1.0,
+      "signal": "pass",
+      "findings": [
+        {
+          "severity": "info",
+          "category": "logic_check_skipped",
+          "message": "Logical structure checks skipped (no API key)",
+          "location": null,
+          "evidence": null,
+          "suggestion": null
+        }
+      ],
+      "execution_time_seconds": 6.9141387939453125e-6,
+      "skipped": false,
+      "skip_reason": null
+    }
+  ],
+  "composite_score": 0.7083,
+  "composite_signal": "pass",
+  "scoring_weights": {
+    "1": 0.35,
+    "2": 0.25,
+    "3": 0.15,
+    "4": 0.1,
+    "5": 0.15
+  },
+  "timestamp": "2026-03-30T14:03:00.120505+00:00",
+  "pipeline_version": "0.1.0",
+  "total_execution_time_seconds": 3.531297,
+  "total_llm_cost_usd": 0.0
+}

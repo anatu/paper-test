@@ -1,0 +1,161 @@
+{
+  "paper": {
+    "year": null,
+    "venue": null,
+    "doi": null,
+    "urls": []
+  },
+  "title": "A Paper with Hallucinated Citations",
+  "authors": [
+    "Test Author"
+  ],
+  "layer_results": [
+    {
+      "layer": 1,
+      "layer_name": "Formal Consistency",
+      "score": 1.0,
+      "signal": "pass",
+      "findings": [
+        {
+          "severity": "info",
+          "category": "unreferenced_label",
+          "message": "Label 'sec:related' is defined but never referenced",
+          "location": null,
+          "evidence": null,
+          "suggestion": null
+        },
+        {
+          "severity": "info",
+          "category": "unreferenced_label",
+          "message": "Label 'sec:method' is defined but never referenced",
+          "location": null,
+          "evidence": null,
+          "suggestion": null
+        },
+        {
+          "severity": "info",
+          "category": "unreferenced_label",
+          "message": "Label 'sec:conclusion' is defined but never referenced",
+          "location": null,
+          "evidence": null,
+          "suggestion": null
+        },
+        {
+          "severity": "info",
+          "category": "unreferenced_label",
+          "message": "Label 'sec:intro' is defined but never referenced",
+          "location": null,
+          "evidence": null,
+          "suggestion": null
+        },
+        {
+          "severity": "info",
+          "category": "claim_alignment_skipped",
+          "message": "Claim alignment skipped: no Anthropic API key configured",
+          "location": null,
+          "evidence": null,
+          "suggestion": null
+        }
+      ],
+      "execution_time_seconds": 0.00027489662170410156,
+      "skipped": false,
+      "skip_reason": null
+    },
+    {
+      "layer": 2,
+      "layer_name": "Citation Verification",
+      "score": 1.0,
+      "signal": "pass",
+      "findings": [
+        {
+          "severity": "info",
+          "category": "existence_check_error",
+          "message": "Citation existence check encountered an error: RetryError",
+          "location": null,
+          "evidence": null,
+          "suggestion": null
+        },
+        {
+          "severity": "info",
+          "category": "claim_alignment_skipped",
+          "message": "Claim-citation alignment check skipped (no API key)",
+          "location": null,
+          "evidence": null,
+          "suggestion": null
+        },
+        {
+          "severity": "info",
+          "category": "coverage_check_skipped",
+          "message": "Related work coverage check skipped (no API key)",
+          "location": null,
+          "evidence": null,
+          "suggestion": null
+        }
+      ],
+      "execution_time_seconds": 3.4336230754852295,
+      "skipped": false,
+      "skip_reason": null
+    },
+    {
+      "layer": 3,
+      "layer_name": "Cross-Paper Consistency",
+      "score": 1.0,
+      "signal": "pass",
+      "findings": [
+        {
+          "severity": "info",
+          "category": "claim_extraction_skipped",
+          "message": "Claim extraction skipped (no API key or no abstract/intro)",
+          "location": null,
+          "evidence": null,
+          "suggestion": null
+        }
+      ],
+      "execution_time_seconds": 0.000010013580322265625,
+      "skipped": false,
+      "skip_reason": null
+    },
+    {
+      "layer": 4,
+      "layer_name": "Reproducibility Check",
+      "score": 1.0,
+      "signal": "pass",
+      "findings": [],
+      "execution_time_seconds": 0.1387650966644287,
+      "skipped": true,
+      "skip_reason": "No code repository found for this paper"
+    },
+    {
+      "layer": 5,
+      "layer_name": "Logical Structure",
+      "score": 1.0,
+      "signal": "pass",
+      "findings": [
+        {
+          "severity": "info",
+          "category": "logic_check_skipped",
+          "message": "Logical structure checks skipped (no API key)",
+          "location": null,
+          "evidence": null,
+          "suggestion": null
+        }
+      ],
+      "execution_time_seconds": 7.867813110351562e-6,
+      "skipped": false,
+      "skip_reason": null
+    }
+  ],
+  "composite_score": 1.0,
+  "composite_signal": "pass",
+  "scoring_weights": {
+    "1": 0.35,
+    "2": 0.25,
+    "3": 0.15,
+    "4": 0.1,
+    "5": 0.15
+  },
+  "timestamp": "2026-03-30T14:03:03.859171+00:00",
+  "pipeline_version": "0.1.0",
+  "total_execution_time_seconds": 3.572745,
+  "total_llm_cost_usd": 0.0
+}

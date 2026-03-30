@@ -1,0 +1,22 @@
+# Default training config — requires GPU (A100/4090, 24GB VRAM)
+backbone: "allenai/specter2"
+max_length: 512
+batch_size: 16
+gradient_accumulation_steps: 2
+learning_rate: 2.0e-5
+weight_decay: 0.01
+warmup_ratio: 0.1
+lr_scheduler: "cosine"
+num_epochs: 10
+patience: 3
+dropout: 0.1
+loss_weights:
+  overall: 2.0
+  soundness: 1.0
+  presentation: 1.0
+  contribution: 1.0
+  accept_prob: 1.5
+device: "auto"
+seed: 42
+output_dir: "models/reward_model"
+data_dir: "data/openreview/processed"

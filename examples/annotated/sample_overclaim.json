@@ -1,0 +1,169 @@
+{
+  "paper": {
+    "year": null,
+    "venue": null,
+    "doi": null,
+    "urls": []
+  },
+  "title": "Paper With Abstract-Conclusion Mismatch",
+  "authors": [
+    "Overclaimer"
+  ],
+  "layer_results": [
+    {
+      "layer": 1,
+      "layer_name": "Formal Consistency",
+      "score": 1.0,
+      "signal": "pass",
+      "findings": [
+        {
+          "severity": "info",
+          "category": "unreferenced_label",
+          "message": "Label 'sec:results' is defined but never referenced",
+          "location": null,
+          "evidence": null,
+          "suggestion": null
+        },
+        {
+          "severity": "info",
+          "category": "unreferenced_label",
+          "message": "Label 'sec:method' is defined but never referenced",
+          "location": null,
+          "evidence": null,
+          "suggestion": null
+        },
+        {
+          "severity": "info",
+          "category": "unreferenced_label",
+          "message": "Label 'sec:conclusion' is defined but never referenced",
+          "location": null,
+          "evidence": null,
+          "suggestion": null
+        },
+        {
+          "severity": "info",
+          "category": "unreferenced_label",
+          "message": "Label 'sec:intro' is defined but never referenced",
+          "location": null,
+          "evidence": null,
+          "suggestion": null
+        },
+        {
+          "severity": "info",
+          "category": "claim_alignment_skipped",
+          "message": "Claim alignment skipped: no Anthropic API key configured",
+          "location": null,
+          "evidence": null,
+          "suggestion": null
+        }
+      ],
+      "execution_time_seconds": 0.0003399848937988281,
+      "skipped": false,
+      "skip_reason": null
+    },
+    {
+      "layer": 2,
+      "layer_name": "Citation Verification",
+      "score": 1.0,
+      "signal": "pass",
+      "findings": [
+        {
+          "severity": "info",
+          "category": "citation_unverifiable",
+          "message": "Reference [ref1] has no extractable title — cannot verify existence",
+          "location": null,
+          "evidence": "Author, A. (2023). Title. Venue.\n\\end{thebibliography}\n\n\\end{document}",
+          "suggestion": null
+        },
+        {
+          "severity": "info",
+          "category": "citation_summary",
+          "message": "Verified 0/1 references via external databases",
+          "location": null,
+          "evidence": null,
+          "suggestion": null
+        },
+        {
+          "severity": "info",
+          "category": "claim_alignment_skipped",
+          "message": "Claim-citation alignment check skipped (no API key)",
+          "location": null,
+          "evidence": null,
+          "suggestion": null
+        },
+        {
+          "severity": "info",
+          "category": "coverage_check_skipped",
+          "message": "Related work coverage check skipped (no API key)",
+          "location": null,
+          "evidence": null,
+          "suggestion": null
+        }
+      ],
+      "execution_time_seconds": 0.038655996322631836,
+      "skipped": false,
+      "skip_reason": null
+    },
+    {
+      "layer": 3,
+      "layer_name": "Cross-Paper Consistency",
+      "score": 1.0,
+      "signal": "pass",
+      "findings": [
+        {
+          "severity": "info",
+          "category": "claim_extraction_skipped",
+          "message": "Claim extraction skipped (no API key or no abstract/intro)",
+          "location": null,
+          "evidence": null,
+          "suggestion": null
+        }
+      ],
+      "execution_time_seconds": 7.867813110351562e-6,
+      "skipped": false,
+      "skip_reason": null
+    },
+    {
+      "layer": 4,
+      "layer_name": "Reproducibility Check",
+      "score": 1.0,
+      "signal": "pass",
+      "findings": [],
+      "execution_time_seconds": 0.12371206283569336,
+      "skipped": true,
+      "skip_reason": "No code repository found for this paper"
+    },
+    {
+      "layer": 5,
+      "layer_name": "Logical Structure",
+      "score": 1.0,
+      "signal": "pass",
+      "findings": [
+        {
+          "severity": "info",
+          "category": "logic_check_skipped",
+          "message": "Logical structure checks skipped (no API key)",
+          "location": null,
+          "evidence": null,
+          "suggestion": null
+        }
+      ],
+      "execution_time_seconds": 8.106231689453125e-6,
+      "skipped": false,
+      "skip_reason": null
+    }
+  ],
+  "composite_score": 1.0,
+  "composite_signal": "pass",
+  "scoring_weights": {
+    "1": 0.35,
+    "2": 0.25,
+    "3": 0.15,
+    "4": 0.1,
+    "5": 0.15
+  },
+  "timestamp": "2026-03-30T14:03:00.285704+00:00",
+  "pipeline_version": "0.1.0",
+  "total_execution_time_seconds": 0.164051,
+  "total_llm_cost_usd": 0.0
+}

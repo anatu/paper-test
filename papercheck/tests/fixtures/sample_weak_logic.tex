@@ -1,0 +1,48 @@
+\documentclass{article}
+\usepackage{amsmath}
+
+\title{A Paper with Weak Logical Structure}
+\author{Bob Tester}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We hypothesize that reinforcement learning can solve all NP-hard optimization problems
+in polynomial time. We test our approach on a simple sorting task and achieve perfect accuracy.
+Our results demonstrate the superiority of RL over all classical algorithms.
+\end{abstract}
+
+\section{Introduction}
+\label{sec:intro}
+
+Classical algorithms struggle with NP-hard problems. We propose using deep reinforcement
+learning to solve arbitrary NP-hard optimization problems efficiently.
+
+Our key hypothesis is that a sufficiently large neural network trained with RL
+can approximate optimal solutions to NP-hard problems in polynomial time.
+
+\section{Methodology}
+\label{sec:method}
+
+We train a small MLP with 2 hidden layers using Q-learning on a sorting task
+with lists of 10 integers. We use a reward of +1 for correct sorts and -1 otherwise.
+
+\section{Results}
+\label{sec:results}
+
+Our method achieves 100\% accuracy on sorting lists of 10 integers.
+Training converges in 500 episodes. However, accuracy drops to 45\% on lists of 100 integers.
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+We have proven that reinforcement learning can solve NP-hard problems in polynomial time.
+Our revolutionary approach makes classical algorithms obsolete and will transform
+computer science. All optimization problems are now tractable with our method.
+
+\begin{thebibliography}{9}
+\bibitem{sutton2018} Sutton, R. and Barto, A. (2018). Reinforcement Learning: An Introduction. MIT Press.
+\end{thebibliography}
+
+\end{document}

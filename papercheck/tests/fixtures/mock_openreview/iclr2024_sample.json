@@ -1,0 +1,30 @@
+[
+  {
+    "openreview_id": "test_paper_001",
+    "title": "Neural Architecture Search via Efficient Exploration",
+    "authors": ["Alice Researcher", "Bob Scientist"],
+    "abstract": "We propose a novel neural architecture search method that efficiently explores the search space using a combination of Bayesian optimization and progressive training. Our method achieves state-of-the-art results on CIFAR-10 and ImageNet while using 10x fewer GPU hours than previous methods. We demonstrate that our approach scales to large search spaces and produces architectures that transfer well across tasks.",
+    "reviews": [
+      {"reviewer_id": "reviewer_1", "overall_rating": 8, "soundness": 7, "presentation": 6, "contribution": 7, "confidence": 4, "summary": "Strong NAS paper", "strengths": "Novel exploration strategy", "weaknesses": "Limited analysis", "questions": "How does it scale?"},
+      {"reviewer_id": "reviewer_2", "overall_rating": 6, "soundness": 6, "presentation": 5, "contribution": 6, "confidence": 3, "summary": "Good paper", "strengths": "Efficient method", "weaknesses": "Presentation could be clearer", "questions": ""},
+      {"reviewer_id": "reviewer_3", "overall_rating": 7, "soundness": 7, "presentation": 7, "contribution": 6, "confidence": 5, "summary": "Solid work", "strengths": "Thorough experiments", "weaknesses": "Incremental contribution", "questions": ""}
+    ],
+    "decision": "Accept",
+    "venue": "iclr",
+    "year": 2024
+  },
+  {
+    "openreview_id": "test_paper_002",
+    "title": "On the Limitations of Large Language Models for Code Generation",
+    "authors": ["Carol Developer"],
+    "abstract": "We present a systematic study of the failure modes of large language models when applied to code generation tasks. Through extensive experiments on 5 benchmarks, we identify three primary categories of errors: logical reasoning failures, API misuse, and context window limitations. Our analysis reveals that scaling model size alone does not address these fundamental limitations.",
+    "reviews": [
+      {"reviewer_id": "reviewer_4", "overall_rating": 5, "soundness": 6, "presentation": 7, "contribution": 4, "confidence": 4, "summary": "Analysis paper", "strengths": "Thorough evaluation", "weaknesses": "Limited novelty", "questions": ""},
+      {"reviewer_id": "reviewer_5", "overall_rating": 3, "soundness": 4, "presentation": 5, "contribution": 3, "confidence": 3, "summary": "Below threshold", "strengths": "Interesting topic", "weaknesses": "No novel method proposed", "questions": ""},
+      {"reviewer_id": "reviewer_6", "overall_rating": 5, "soundness": 5, "presentation": 6, "contribution": 5, "confidence": 4, "summary": "Borderline", "strengths": "Good benchmarking", "weaknesses": "Limited insights", "questions": ""}
+    ],
+    "decision": "Reject",
+    "venue": "iclr",
+    "year": 2024
+  }
+]

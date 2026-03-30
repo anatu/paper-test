@@ -1,0 +1,170 @@
+{
+  "paper": {
+    "year": null,
+    "venue": null,
+    "doi": null,
+    "urls": []
+  },
+  "title": "A Sample Clean Paper for Testing",
+  "authors": [
+    "Alice Test",
+    "Bob Verify"
+  ],
+  "layer_results": [
+    {
+      "layer": 1,
+      "layer_name": "Formal Consistency",
+      "score": 1.0,
+      "signal": "pass",
+      "findings": [
+        {
+          "severity": "info",
+          "category": "undefined_variable",
+          "message": "Variable 'e' used in equations but not explicitly defined",
+          "location": null,
+          "evidence": null,
+          "suggestion": "Consider defining this variable where it first appears."
+        },
+        {
+          "severity": "info",
+          "category": "undefined_variable",
+          "message": "Variable 'S' used in equations but not explicitly defined",
+          "location": null,
+          "evidence": null,
+          "suggestion": "Consider defining this variable where it first appears."
+        },
+        {
+          "severity": "info",
+          "category": "unreferenced_label",
+          "message": "Label 'sec:conclusion' is defined but never referenced",
+          "location": null,
+          "evidence": null,
+          "suggestion": null
+        },
+        {
+          "severity": "info",
+          "category": "unreferenced_label",
+          "message": "Label 'sec:intro' is defined but never referenced",
+          "location": null,
+          "evidence": null,
+          "suggestion": null
+        },
+        {
+          "severity": "info",
+          "category": "claim_alignment_skipped",
+          "message": "Claim alignment skipped: no Anthropic API key configured",
+          "location": null,
+          "evidence": null,
+          "suggestion": null
+        }
+      ],
+      "execution_time_seconds": 0.0009050369262695312,
+      "skipped": false,
+      "skip_reason": null
+    },
+    {
+      "layer": 2,
+      "layer_name": "Citation Verification",
+      "score": 0.85,
+      "signal": "pass",
+      "findings": [
+        {
+          "severity": "error",
+          "category": "citation_not_found",
+          "message": "Reference [smith2023] could not be verified: \"Paper verification methods\" (2023)",
+          "location": null,
+          "evidence": "Smith, J. (2023). Paper verification methods. Journal of Testing, 1(1), 1-10.",
+          "suggestion": "Verify that this citation is correct. It may be a preprint not yet indexed, or the title/authors may contain errors."
+        },
+        {
+          "severity": "info",
+          "category": "citation_summary",
+          "message": "Verified 1/2 references via external databases",
+          "location": null,
+          "evidence": null,
+          "suggestion": null
+        },
+        {
+          "severity": "info",
+          "category": "claim_alignment_skipped",
+          "message": "Claim-citation alignment check skipped (no API key)",
+          "location": null,
+          "evidence": null,
+          "suggestion": null
+        },
+        {
+          "severity": "info",
+          "category": "coverage_check_skipped",
+          "message": "Related work coverage check skipped (no API key)",
+          "location": null,
+          "evidence": null,
+          "suggestion": null
+        }
+      ],
+      "execution_time_seconds": 0.04626822471618652,
+      "skipped": false,
+      "skip_reason": null
+    },
+    {
+      "layer": 3,
+      "layer_name": "Cross-Paper Consistency",
+      "score": 1.0,
+      "signal": "pass",
+      "findings": [
+        {
+          "severity": "info",
+          "category": "claim_extraction_skipped",
+          "message": "Claim extraction skipped (no API key or no abstract/intro)",
+          "location": null,
+          "evidence": null,
+          "suggestion": null
+        }
+      ],
+      "execution_time_seconds": 0.000012159347534179688,
+      "skipped": false,
+      "skip_reason": null
+    },
+    {
+      "layer": 4,
+      "layer_name": "Reproducibility Check",
+      "score": 1.0,
+      "signal": "pass",
+      "findings": [],
+      "execution_time_seconds": 0.11309695243835449,
+      "skipped": true,
+      "skip_reason": "No code repository found for this paper"
+    },
+    {
+      "layer": 5,
+      "layer_name": "Logical Structure",
+      "score": 1.0,
+      "signal": "pass",
+      "findings": [
+        {
+          "severity": "info",
+          "category": "logic_check_skipped",
+          "message": "Logical structure checks skipped (no API key)",
+          "location": null,
+          "evidence": null,
+          "suggestion": null
+        }
+      ],
+      "execution_time_seconds": 7.152557373046875e-6,
+      "skipped": false,
+      "skip_reason": null
+    }
+  ],
+  "composite_score": 0.9583,
+  "composite_signal": "pass",
+  "scoring_weights": {
+    "1": 0.35,
+    "2": 0.25,
+    "3": 0.15,
+    "4": 0.1,
+    "5": 0.15
+  },
+  "timestamp": "2026-03-30T14:02:56.388084+00:00",
+  "pipeline_version": "0.1.0",
+  "total_execution_time_seconds": 0.161606,
+  "total_llm_cost_usd": 0.0
+}
