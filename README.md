@@ -22,6 +22,7 @@ paper-test/
 ├── examples/annotated/      # Annotated pipeline output on test papers
 ├── fetch_arxiv.py           # Search and download ArXiv paper source
 ├── visualize_latex.py       # Local dev server: .tex → live-reloading PDF
+├── visualize_results.py     # Interactive dashboard for pipeline report.json
 └── papercheck/              # Verification pipeline (Python package)
     ├── cli.py               # CLI entry point
     ├── pipeline.py           # Orchestrator: runs layers sequentially
@@ -54,7 +55,7 @@ The `papercheck` pipeline takes a paper (PDF, `.tex`, or ArXiv ID) and runs it t
 Each layer produces findings with severity levels (info, warning, error, critical) and a 0-1 score. Scores are combined into a weighted composite:
 
 ```
-Layer weights: L1=0.35, L2=0.25, L3=0.15, L4=0.10, L5=0.15
+Layer weights: L1=0.25, L2=0.20, L3=0.18, L4=0.12, L5=0.10, L6=0.15
 Composite: PASS (>=0.7) | WARN (>=0.4) | FAIL (<0.4)
 ```
 
@@ -101,6 +102,9 @@ papercheck run 2301.00001
 # Cache management
 papercheck cache stats
 papercheck cache clear
+
+# View results in an interactive dashboard
+python visualize_results.py results/report.json
 ```
 
 ### Example output
