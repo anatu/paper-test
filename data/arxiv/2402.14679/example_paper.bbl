@@ -1,0 +1,148 @@
+\begin{thebibliography}{24}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Allport(1937)]{allport1937personality}
+Allport, G.~W.
+\newblock Personality: A psychological interpretation.
+\newblock 1937.
+\newblock URL \url{https://psycnet.apa.org/record/1938-01964-000}.
+
+\bibitem[Brown \& Maydeu-Olivares(2018)Brown and Maydeu-Olivares]{brown2018ordinal}
+Brown, A. and Maydeu-Olivares, A.
+\newblock Ordinal factor analysis of graded-preference questionnaire data.
+\newblock \emph{Structural Equation Modeling: A Multidisciplinary Journal}, 25\penalty0 (4):\penalty0 516--529, 2018.
+\newblock URL \url{https://www.tandfonline.com/doi/abs/10.1080/10705511.2017.1392247}.
+
+\bibitem[Costa \& McCrae(2008)Costa and McCrae]{costa2008revised}
+Costa, P.~T. and McCrae, R.~R.
+\newblock The revised neo personality inventory (neo-pi-r).
+\newblock \emph{The SAGE handbook of personality theory and assessment}, 2\penalty0 (2):\penalty0 179--198, 2008.
+
+\bibitem[Gabriel(2020)]{gabriel2020artificial}
+Gabriel, I.
+\newblock Artificial intelligence, values, and alignment.
+\newblock \emph{Minds and machines}, 30\penalty0 (3):\penalty0 411--437, 2020.
+\newblock URL \url{https://link.springer.com/article/10.1007/s11023-020-09539-2}.
+
+\bibitem[Goldberg(1981)]{goldberg1981language}
+Goldberg, L.~R.
+\newblock Language and individual differences: The search for universals in personality lexicons.
+\newblock \emph{Review of personality and social psychology}, 2\penalty0 (1):\penalty0 141--165, 1981.
+\newblock URL \url{https://www.scienceopen.com/document?vid=3cdca9a2-ab50-48bf-97b5-0c2236e65098}.
+
+\bibitem[Goldberg(1992)]{goldberg1992development}
+Goldberg, L.~R.
+\newblock The development of markers for the big-five factor structure.
+\newblock \emph{Psychological assessment}, 4\penalty0 (1):\penalty0 26, 1992.
+\newblock URL \url{https://psycnet.apa.org/record/1992-25730-001}.
+
+\bibitem[Golfried \& Kent(1972)Golfried and Kent]{golfried1972traditional}
+Golfried, M.~R. and Kent, R.~N.
+\newblock Traditional versus behavioral personality assessment: A comparison of methodological and theoretical assumptions.
+\newblock \emph{Psychological Bulletin}, 77\penalty0 (6):\penalty0 409, 1972.
+\newblock URL \url{https://psycnet.apa.org/record/1972-29191-001}.
+
+\bibitem[GU \& Hu(2012)GU and Hu]{gu2012mbti}
+GU, X.-Y. and Hu, S.
+\newblock Mbti: New development and application.
+\newblock \emph{Advances in Psychological Science}, 20\penalty0 (10):\penalty0 1700, 2012.
+\newblock URL \url{https://journal.psych.ac.cn/xlkxjz/EN/10.3724/SP.J.1042.2012.01700}.
+
+\bibitem[Huang et~al.(2023)Huang, Wang, Lam, Li, Jiao, and Lyu]{huang2023revisiting}
+Huang, J., Wang, W., Lam, M.~H., Li, E.~J., Jiao, W., and Lyu, M.~R.
+\newblock Revisiting the reliability of psychological scales on large language models, 2023.
+\newblock URL \url{https://arxiv.org/abs/2305.19926v3}.
+
+\bibitem[Huang et~al.(2024)Huang, Wang, Li, Lam, Ren, Yuan, Jiao, Tu, and Lyu]{huang2024chatgpt}
+Huang, J., Wang, W., Li, E.~J., Lam, M.~H., Ren, S., Yuan, Y., Jiao, W., Tu, Z., and Lyu, M.~R.
+\newblock Who is chatgpt? benchmarking llms' psychological portrayal using psychobench, 2024.
+\newblock URL \url{https://arxiv.org/abs/2310.01386}.
+
+\bibitem[John et~al.(1991)John, Donahue, and Kentle]{john1991big}
+John, O.~P., Donahue, E.~M., and Kentle, R.~L.
+\newblock Big five inventory.
+\newblock \emph{Journal of personality and social psychology}, 1991.
+\newblock URL \url{https://psycnet.apa.org/doiLanding?doi=10.1037%2Ft07550-000}.
+
+\bibitem[Johnson et~al.(1998)Johnson, Johnson, Murphy, Weiss, and Zimmerman]{johnson1998third}
+Johnson, W.~L., Johnson, A.~M., Murphy, S.~D., Weiss, A., and Zimmerman, K.~J.
+\newblock A third-order component analysis of the myers-briggs type indicator.
+\newblock \emph{Educational and psychological measurement}, 58\penalty0 (5):\penalty0 820--831, 1998.
+\newblock URL \url{https://journals.sagepub.com/doi/abs/10.1177/0013164498058005007}.
+
+\bibitem[Joshi et~al.(2015)Joshi, Kale, Chandel, and Pal]{joshi2015likert}
+Joshi, A., Kale, S., Chandel, S., and Pal, D.~K.
+\newblock Likert scale: Explored and explained.
+\newblock \emph{British journal of applied science \& technology}, 7\penalty0 (4):\penalty0 396--403, 2015.
+\newblock URL \url{http://research.sdpublishers.net/id/eprint/2464/}.
+
+\bibitem[Makwana \& Dave(2020)Makwana and Dave]{makwana2020confirmatory}
+Makwana, K. and Dave, D. G.~B.
+\newblock Confirmatory factor analysis of neris type explorer{\textregistered} scale--a tool for personality assessment.
+\newblock \emph{International Journal of Management}, 11\penalty0 (9), 2020.
+\newblock URL \url{https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3709640}.
+
+\bibitem[Miotto et~al.(2022)Miotto, Rossberg, and Kleinberg]{miotto-etal-2022-gpt}
+Miotto, M., Rossberg, N., and Kleinberg, B.
+\newblock Who is {GPT}-3? an exploration of personality, values and demographics.
+\newblock In Bamman, D., Hovy, D., Jurgens, D., Keith, K., O'Connor, B., and Volkova, S. (eds.), \emph{Proceedings of the Fifth Workshop on Natural Language Processing and Computational Social Science (NLP+CSS)}, pp.\  218--227, Abu Dhabi, UAE, November 2022. Association for Computational Linguistics.
+\newblock \doi{10.18653/v1/2022.nlpcss-1.24}.
+\newblock URL \url{https://aclanthology.org/2022.nlpcss-1.24}.
+
+\bibitem[Myers(1962)]{myers1962myers}
+Myers, I.~B.
+\newblock The myers-briggs type indicator: Manual (1962).
+\newblock 1962.
+\newblock URL \url{https://psycnet.apa.org/record/2013-29682-000?doi=1}.
+
+\bibitem[Nardi(2011)]{nardi2011neuroscience}
+Nardi, D.
+\newblock Neuroscience of personality.
+\newblock \emph{Neuroscience}, 2:\penalty0 10--2012, 2011.
+\newblock URL \url{https://core.ac.uk/pdf/aaa287819128.pdf}.
+
+\bibitem[Roberts \& Yoon(2022)Roberts and Yoon]{roberts2022personality}
+Roberts, B.~W. and Yoon, H.~J.
+\newblock Personality psychology.
+\newblock \emph{Annual review of psychology}, 73:\penalty0 489--516, 2022.
+\newblock URL \url{https://www.annualreviews.org/doi/abs/10.1146/annurev-psych-020821-114927}.
+
+\bibitem[Roberts et~al.(2007)Roberts, Kuncel, Shiner, Caspi, and Goldberg]{roberts2007power}
+Roberts, B.~W., Kuncel, N.~R., Shiner, R., Caspi, A., and Goldberg, L.~R.
+\newblock The power of personality: The comparative validity of personality traits, socioeconomic status, and cognitive ability for predicting important life outcomes.
+\newblock \emph{Perspectives on Psychological science}, 2\penalty0 (4):\penalty0 313--345, 2007.
+\newblock URL \url{https://journals.sagepub.com/doi/abs/10.1111/j.1745-6916.2007.00047.x}.
+
+\bibitem[Safdari et~al.(2023)Safdari, Serapio-Garc{\'\i}a, Crepy, Fitz, Romero, Sun, Abdulhai, Faust, and Matari{\'c}]{safdari2023personality}
+Safdari, M., Serapio-Garc{\'\i}a, G., Crepy, C., Fitz, S., Romero, P., Sun, L., Abdulhai, M., Faust, A., and Matari{\'c}, M.
+\newblock Personality traits in large language models.
+\newblock \emph{arXiv preprint arXiv:2307.00184}, 2023.
+\newblock URL \url{https://arxiv.org/abs/2307.00184}.
+
+\bibitem[Saucier \& Goldberg(2001)Saucier and Goldberg]{saucier2001lexical}
+Saucier, G. and Goldberg, L.~R.
+\newblock Lexical studies of indigenous personality factors: Premises, products, and prospects.
+\newblock \emph{Journal of personality}, 69\penalty0 (6):\penalty0 847--879, 2001.
+
+\bibitem[Sisson(1948)]{sisson1948forced}
+Sisson, E.~D.
+\newblock Forced choice—the new army rating 1.
+\newblock \emph{Personnel Psychology}, 1\penalty0 (3):\penalty0 365--381, 1948.
+\newblock URL \url{https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1744-6570.1948.tb01316.x}.
+
+\bibitem[Zhang et~al.(2023)Zhang, Luo, and Li]{zhang2023moving}
+Zhang, B., Luo, J., and Li, J.
+\newblock Moving beyond likert and traditional forced-choice scales: A comprehensive investigation of the graded forced-choice format.
+\newblock \emph{Multivariate Behavioral Research}, pp.\  1--27, 2023.
+\newblock URL \url{https://www.tandfonline.com/doi/abs/10.1080/00273171.2023.2235682}.
+
+\bibitem[Zhang(2012)]{zhang2012BFC}
+Zhang, X.
+\newblock \emph{Preliminary revision of the Big Five Personality Inventory (IPIP NEO-PI-R)}.
+\newblock PhD thesis, Yangzhou University, 2012.
+
+\end{thebibliography}
