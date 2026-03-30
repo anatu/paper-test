@@ -1,0 +1,35 @@
+\documentclass{article}
+
+\title{Paper With Dangling References}
+\author{Test Author}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This paper intentionally contains broken cross-references for testing.
+\end{abstract}
+
+\section{Introduction}
+\label{sec:intro}
+
+See Figure~\ref{fig:nonexistent} for an illustration.
+Our results in Table~\ref{tab:missing} confirm this.
+We refer to Section~\ref{sec:phantom} for details.
+
+Valid reference to Section~\ref{sec:intro} should work fine.
+
+\section{Method}
+\label{sec:method}
+
+As shown in Equation~\ref{eq:ghost}, the relationship holds.
+
+\section{Conclusion}
+
+We conclude based on results in Section~\ref{sec:results_gone}.
+
+\begin{thebibliography}{9}
+\bibitem{real2023} Real, A. (2023). An actual paper. Journal, 1-10.
+\end{thebibliography}
+
+\end{document}
