@@ -37,6 +37,15 @@ paper-test/
     ├── scoring/              # Composite scoring and report assembly
     ├── report/               # JSON and Markdown report renderers
     ├── cache/                # SQLite-backed API response cache
+    ├── reward_model/         # Peer-review reward model (SciBERT + multi-head regression)
+    │   ├── configs/          # Training configs (small.yaml, default.yaml)
+    │   ├── data_ingestion.py # OpenReview API scraper
+    │   ├── data_processing.py# Filtering, normalization, consensus labels, splits
+    │   ├── feature_extraction.py # SPECTER2/SciBERT tokenization + structural features
+    │   ├── model.py          # Multi-head regression (5 review dimensions)
+    │   ├── train.py          # Training loop with early stopping + discriminative LR
+    │   ├── inference.py      # Checkpoint loading + prediction
+    │   └── calibration.py    # Isotonic regression post-hoc calibration
     └── tests/                # Test suite (94 tests, all pass without API keys)
 ```
 
@@ -80,6 +89,8 @@ pip install -e ".[dev]"
 |----------|----------|---------|
 | `ANTHROPIC_API_KEY` | For LLM checks | Powers claim alignment, hypothesis checking, overclaiming detection |
 | `S2_API_KEY` | Optional | Higher Semantic Scholar rate limits (100 req/s vs 10 req/s) |
+| `OPENREVIEW_USERNAME` | For reward model | OpenReview account for fetching peer reviews |
+| `OPENREVIEW_PASSWORD` | For reward model | OpenReview account password |
 
 ## Usage
 
@@ -118,6 +129,30 @@ Layer 1: Formal Consistency — 0.40 (WARN)
   !  ERROR     Inconsistent p-value: reported p = 0.001, recomputed p ~ 0.055 from F(2,45) = 3.1
 ```
 
+## Reward model
+
+A multi-head regression model that predicts peer review scores from paper abstracts + structural features. Built on SciBERT with 5 output dimensions: overall rating, soundness, presentation, contribution, and accept probability.
+
+```bash
+# Install reward model dependencies
+pip install -e '.[reward]'
+
+# Fetch peer review data from OpenReview
+papercheck reward fetch --venue iclr --years 2024
+
+# Process data (supports combining multiple venues)
+papercheck reward process --source iclr:2024 --source neurips:2024
+
+# Train (small config for quick iteration, default for full fine-tuning)
+papercheck reward train --config papercheck/reward_model/configs/small.yaml
+papercheck reward train --config papercheck/reward_model/configs/default.yaml
+
+# Evaluate on held-out test set
+papercheck reward eval --model-dir models/reward_model
+```
+
+The default config fine-tunes the full SciBERT encoder with discriminative learning rates (2e-6 encoder, 2e-5 heads) and supports auto-detection of CUDA, MPS (Apple Silicon), or CPU.
+
 ## Paper authoring tools
 
 - **`papers/`** — LaTeX source files for experimental papers
@@ -141,7 +176,7 @@ The full test suite runs without API keys or network access:
 python -m pytest papercheck/tests/ -v
 ```
 
-94 tests covering all 5 layers, parsing, scoring, caching, and pipeline orchestration. External API calls are mocked in tests; LLM-based checks degrade gracefully to info findings.
+127 tests covering all 5 layers, reward model, parsing, scoring, caching, and pipeline orchestration. External API calls are mocked in tests; LLM-based checks degrade gracefully to info findings.
 
 ## Annotated examples
 
