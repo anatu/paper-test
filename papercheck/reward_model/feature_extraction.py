@@ -37,14 +37,32 @@ class NormStats:
     means: list[float] = field(default_factory=list)
     stds: list[float] = field(default_factory=list)
 
+    def save(self, path) -> None:
+        import json
+        from pathlib import Path
+        Path(path).write_text(json.dumps({"means": self.means, "stds": self.stds}))
+
+    @classmethod
+    def load(cls, path) -> "NormStats":
+        import json
+        data = json.loads(open(path).read())
+        return cls(means=data["means"], stds=data["stds"])
+
 
 class PaperFeatureExtractor:
     """Converts processed papers into model input tensors."""
 
+    # SPECTER2 is an adapter on allenai/specter_plus_plus (SciBERT-based) and
+    # doesn't ship its own tokenizer.  Map to the underlying tokenizer repo.
+    _TOKENIZER_MAP: dict[str, str] = {
+        "allenai/specter2": "allenai/scibert_scivocab_uncased",
+    }
+
     def __init__(self, backbone: str = "allenai/specter2", max_length: int = 512):
         if not HAS_TORCH:
             raise ImportError("torch and transformers required: pip install torch transformers")
-        self._tokenizer = AutoTokenizer.from_pretrained(backbone)
+        tokenizer_name = self._TOKENIZER_MAP.get(backbone, backbone)
+        self._tokenizer = AutoTokenizer.from_pretrained(tokenizer_name)
         self._max_length = max_length
         self._norm_stats: NormStats | None = None
 

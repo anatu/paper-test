@@ -14,6 +14,7 @@ from papercheck.reward_model.data_ingestion import (
     _extract_score,
     _extract_text,
 )
+from papercheck.reward_model.data_processing import load_venue_data_from_disk
 
 
 FIXTURES_DIR = Path(__file__).parent / "fixtures" / "mock_openreview"
@@ -102,3 +103,32 @@ class TestReviewRecord:
         )
         assert review.soundness is None
         assert review.overall_rating == 7.0
+
+
+class TestDiskRoundTrip:
+    def test_save_and_load_venue_data(self, tmp_path):
+        """Should round-trip SubmissionRecords through disk cache format."""
+        papers_dir = tmp_path / "iclr_2024" / "papers"
+        papers_dir.mkdir(parents=True)
+
+        record = SubmissionRecord(
+            openreview_id="test_001",
+            title="Test Paper",
+            abstract="An abstract " * 20,
+            reviews=[ReviewRecord(reviewer_id="r1", overall_rating=7.0)],
+            decision="Accept",
+            venue="iclr",
+            year=2024,
+        )
+        (papers_dir / "test_001.json").write_text(record.model_dump_json())
+
+        loaded = load_venue_data_from_disk(tmp_path, "iclr", 2024)
+        assert len(loaded.papers) == 1
+        assert loaded.papers[0].title == "Test Paper"
+        assert loaded.papers[0].reviews[0].overall_rating == 7.0
+
+    def test_load_missing_venue_raises(self, tmp_path):
+        """Should raise FileNotFoundError for missing venue."""
+        import pytest
+        with pytest.raises(FileNotFoundError):
+            load_venue_data_from_disk(tmp_path, "iclr", 2024)

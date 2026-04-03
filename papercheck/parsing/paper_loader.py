@@ -36,13 +36,49 @@ def _find_main_tex(paper_dir: Path) -> Path | None:
 
 
 def _extract_title_from_latex(source: str) -> str:
-    """Extract \\title{...} from LaTeX source."""
-    m = re.search(r"\\title\{([^}]*)\}", source)
-    return m.group(1).strip() if m else ""
+    """Extract title from LaTeX source.
+
+    Handles standard \\title{} and venue-specific variants:
+    \\icmltitle, \\neuripsauthor, \\titlerunning, etc.
+    Multi-line titles (with \\\\) are joined with a space.
+    """
+    # Try venue-specific commands first (they're more specific)
+    for pattern in [
+        r"\\icmltitle\{(.*?)\}",
+        r"\\neuripstitle\{(.*?)\}",
+        r"\\title\[.*?\]\{(.*?)\}",  # \title[short]{long}
+        r"\\title\{(.*?)\}",
+    ]:
+        m = re.search(pattern, source, re.DOTALL)
+        if m:
+            title = m.group(1).strip()
+            # Clean up line breaks and extra whitespace
+            title = re.sub(r"\s*\\\\\s*", " ", title)
+            title = re.sub(r"\s+", " ", title)
+            return title
+    return ""
 
 
 def _extract_authors_from_latex(source: str) -> list[str]:
-    """Extract \\author{...} from LaTeX source."""
+    """Extract authors from LaTeX source.
+
+    Handles standard \\author{}, \\icmlauthor{name}{affil},
+    \\begin{icmlauthorlist}...\\end{icmlauthorlist}, and similar.
+    """
+    # Try ICML-style author list first
+    m = re.search(
+        r"\\begin\{icmlauthorlist\}(.*?)\\end\{icmlauthorlist\}",
+        source, re.DOTALL,
+    )
+    if m:
+        return re.findall(r"\\icmlauthor\{([^}]*)\}", m.group(1))
+
+    # Try NeurIPS-style
+    authors = re.findall(r"\\neuripsauthor\{([^}]*)\}", source)
+    if authors:
+        return authors
+
+    # Standard \author{...}
     m = re.search(r"\\author\{([^}]*)\}", source, re.DOTALL)
     if not m:
         return []
@@ -56,6 +92,27 @@ def _extract_abstract_from_latex(source: str) -> str:
     """Extract abstract from \\begin{abstract}...\\end{abstract}."""
     m = re.search(r"\\begin\{abstract\}(.*?)\\end\{abstract\}", source, re.DOTALL)
     return m.group(1).strip() if m else ""
+
+
+def _extract_year_from_latex(source: str) -> int | None:
+    """Extract publication year from LaTeX source.
+
+    Tries \\year, date commands, and copyright notices.
+    """
+    for pattern in [
+        r"\\year\s*=?\s*(\d{4})",
+        r"\\date\{[^}]*(\d{4})[^}]*\}",
+        r"\\icmlYear\{(\d{4})\}",
+        r"\\acmYear\{(\d{4})\}",
+        r"copyright\s+(\d{4})",
+        r"\\usepackage(?:\[[^\]]*\])?\{icml(\d{4})\}",
+        r"\\usepackage(?:\[[^\]]*\])?\{neurips_(\d{4})\}",
+        r"\\usepackage(?:\[[^\]]*\])?\{acl(\d{4})\}",
+    ]:
+        m = re.search(pattern, source)
+        if m:
+            return int(m.group(1))
+    return None
 
 
 def load_paper(source: str, config: PipelineConfig | None = None) -> PaperData:
@@ -127,6 +184,7 @@ def _load_from_latex(tex_path: Path) -> PaperData:
     title = _extract_title_from_latex(source)
     authors = _extract_authors_from_latex(source)
     abstract = _extract_abstract_from_latex(source)
+    year = _extract_year_from_latex(source)
 
     return PaperData(
         source_type="latex",
@@ -138,4 +196,5 @@ def _load_from_latex(tex_path: Path) -> PaperData:
         references=parsed["references"],
         equations=parsed["equations"],
         latex_source=source,
+        metadata=PaperMetadata(year=year),
     )

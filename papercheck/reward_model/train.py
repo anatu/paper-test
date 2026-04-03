@@ -38,6 +38,8 @@ class TrainingConfig(BaseModel):
         "overall": 2.0, "soundness": 1.0, "presentation": 1.0,
         "contribution": 1.0, "accept_prob": 1.5,
     })
+    freeze_encoder: bool = False
+    encoder_lr: float | None = None  # If set, use this LR for encoder; main LR for heads
     device: str = "auto"
     seed: int = 42
     output_dir: str = "models/reward_model"
@@ -110,10 +112,23 @@ class RewardModelTrainer:
         model = PaperRewardModel(
             backbone=self.config.backbone,
             dropout=self.config.dropout,
+            freeze_encoder=self.config.freeze_encoder,
         ).to(self.device)
 
+        # Discriminative learning rates: lower LR for pretrained encoder,
+        # higher LR for randomly-initialized projection + heads.
+        if self.config.encoder_lr is not None and not self.config.freeze_encoder:
+            encoder_params = list(model.encoder.parameters())
+            head_params = [p for n, p in model.named_parameters() if not n.startswith("encoder.")]
+            param_groups = [
+                {"params": encoder_params, "lr": self.config.encoder_lr},
+                {"params": head_params, "lr": self.config.learning_rate},
+            ]
+        else:
+            param_groups = [{"params": [p for p in model.parameters() if p.requires_grad]}]
+
         optimizer = torch.optim.AdamW(
-            model.parameters(),
+            param_groups,
             lr=self.config.learning_rate,
             weight_decay=self.config.weight_decay,
         )
@@ -209,7 +224,11 @@ class RewardModelTrainer:
 
     def _resolve_device(self, device: str) -> str:
         if device == "auto":
-            return "cuda" if torch.cuda.is_available() else "cpu"
+            if torch.cuda.is_available():
+                return "cuda"
+            if torch.backends.mps.is_available():
+                return "mps"
+            return "cpu"
         return device
 
 

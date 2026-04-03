@@ -31,6 +31,14 @@ corpus = [
     "chromadb>=0.4",
     "sentence-transformers>=2.3",
 ]
+reward = [
+    "torch>=2.2",
+    "transformers>=4.38",
+    "scikit-learn>=1.4",
+    "openreview-py>=1.30",
+    "pyyaml>=6.0",
+    "safetensors>=0.4",
+]
 
 [project.scripts]
 papercheck = "papercheck.cli:main"

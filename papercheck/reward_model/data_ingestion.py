@@ -92,10 +92,15 @@ class OpenReviewScraper:
             raise ImportError(
                 "openreview-py is required: pip install openreview-py"
             )
+        if not username or not password:
+            raise ValueError(
+                "OpenReview credentials required. Set OPENREVIEW_USERNAME and "
+                "OPENREVIEW_PASSWORD in your .env file (free account at openreview.net)."
+            )
         self._client = openreview.api.OpenReviewClient(
             baseurl="https://api2.openreview.net",
-            username=username or "",
-            password=password or "",
+            username=username,
+            password=password,
         )
         self._cache_dir = cache_dir
         self._request_delay = 1.0  # 1 req/sec rate limit
@@ -103,16 +108,29 @@ class OpenReviewScraper:
     def fetch_venue(self, venue: str, year: int) -> VenueData:
         """Download all submissions + reviews for a venue-year.
 
-        Supports resume via manifest.json.
+        Supports resume via manifest.json. Tries multiple invitation
+        formats since OpenReview changed naming conventions over time.
         """
         manifest = self._load_manifest(venue, year)
         already_fetched = set(manifest.get("fetched_ids", []))
 
-        invitation = self._submission_invitation(venue, year)
-        logger.info("Fetching submissions for %s %d (invitation: %s)", venue, year, invitation)
+        submissions = None
+        for invitation in self._submission_invitations(venue, year):
+            logger.info("Trying invitation: %s", invitation)
+            try:
+                submissions = self._client.get_all_notes(invitation=invitation)
+                if submissions:
+                    logger.info("Found %d submissions via %s", len(submissions), invitation)
+                    break
+            except Exception as e:
+                logger.debug("Invitation %s failed: %s", invitation, e)
+                continue
 
-        submissions = self._client.get_all_notes(invitation=invitation)
-        logger.info("Found %d submissions", len(submissions))
+        if not submissions:
+            raise RuntimeError(
+                f"Could not fetch submissions for {venue} {year}. "
+                f"Check your credentials and that the venue/year exists on OpenReview."
+            )
 
         papers: list[SubmissionRecord] = []
         total_reviews = 0
@@ -128,16 +146,18 @@ class OpenReviewScraper:
                     continue
 
             # Fetch reviews and decision
+            # note.number is the submission number used in invitation strings
+            sub_number = getattr(note, "number", None)
             time.sleep(self._request_delay)
-            reviews = self._get_reviews(note_id, venue, year)
+            reviews = self._get_reviews(note_id, venue, year, sub_number)
             time.sleep(self._request_delay)
-            decision = self._get_decision(note_id, venue, year)
+            decision = self._get_decision(note_id, venue, year, sub_number)
 
             content = note.content or {}
             record = SubmissionRecord(
                 openreview_id=note_id,
                 title=_extract_field(content, "title"),
-                authors=_extract_field(content, "authors") or [],
+                authors=_extract_list(content, "authors"),
                 abstract=_extract_field(content, "abstract"),
                 pdf_url=_extract_field(content, "pdf"),
                 reviews=reviews,
@@ -163,13 +183,18 @@ class OpenReviewScraper:
             total_reviews=total_reviews,
         )
 
-    def _get_reviews(self, note_id: str, venue: str, year: int) -> list[ReviewRecord]:
+    def _get_reviews(self, note_id: str, venue: str, year: int, sub_number: int | None = None) -> list[ReviewRecord]:
         """Get all official reviews for a submission."""
-        invitation = self._review_invitation(venue, year)
-        try:
-            notes = self._client.get_all_notes(forum=note_id, invitation=invitation)
-        except Exception as e:
-            logger.warning("Failed to fetch reviews for %s: %s", note_id, e)
+        notes = None
+        for invitation in self._review_invitations(venue, year, sub_number):
+            try:
+                notes = self._client.get_all_notes(forum=note_id, invitation=invitation)
+                if notes:
+                    break
+            except Exception:
+                continue
+        if not notes:
+            logger.warning("No reviews found for %s", note_id)
             return []
 
         reviews = []
@@ -197,13 +222,16 @@ class OpenReviewScraper:
             ))
         return reviews
 
-    def _get_decision(self, note_id: str, venue: str, year: int) -> str:
+    def _get_decision(self, note_id: str, venue: str, year: int, sub_number: int | None = None) -> str:
         """Get accept/reject decision for a submission."""
-        invitation = self._decision_invitation(venue, year)
-        try:
-            notes = self._client.get_all_notes(forum=note_id, invitation=invitation)
-        except Exception:
-            return ""
+        notes = None
+        for invitation in self._decision_invitations(venue, year, sub_number):
+            try:
+                notes = self._client.get_all_notes(forum=note_id, invitation=invitation)
+                if notes:
+                    break
+            except Exception:
+                continue
         if not notes:
             return ""
         content = notes[0].content or {}
@@ -216,26 +244,47 @@ class OpenReviewScraper:
             return "Withdrawn"
         return decision
 
-    def _submission_invitation(self, venue: str, year: int) -> str:
-        venue_map = {
-            "iclr": f"ICLR.cc/{year}/Conference/-/Blind_Submission",
-            "neurips": f"NeurIPS.cc/{year}/Conference/-/Blind_Submission",
-        }
-        return venue_map.get(venue, f"{venue}/{year}/-/Blind_Submission")
+    def _submission_invitations(self, venue: str, year: int) -> list[str]:
+        """Return candidate invitation strings, newest format first."""
+        v = venue.upper()
+        if venue == "iclr":
+            return [
+                f"ICLR.cc/{year}/Conference/-/Submission",
+                f"ICLR.cc/{year}/Conference/-/Blind_Submission",
+            ]
+        elif venue == "neurips":
+            return [
+                f"NeurIPS.cc/{year}/Conference/-/Submission",
+                f"NeurIPS.cc/{year}/Conference/-/Blind_Submission",
+            ]
+        return [f"{v}/{year}/-/Submission", f"{v}/{year}/-/Blind_Submission"]
 
-    def _review_invitation(self, venue: str, year: int) -> str:
-        venue_map = {
-            "iclr": f"ICLR.cc/{year}/Conference/.*/-/Official_Review",
-            "neurips": f"NeurIPS.cc/{year}/Conference/.*/-/Official_Review",
-        }
-        return venue_map.get(venue, f"{venue}/{year}/.*/-/Official_Review")
+    def _review_invitations(self, venue: str, year: int, sub_number: int | None = None) -> list[str]:
+        """Build review invitation strings. Uses exact submission number when available."""
+        prefix = self._venue_prefix(venue)
+        invitations = []
+        if sub_number is not None:
+            # Exact match — this is what the API actually requires
+            invitations.append(f"{prefix}/{year}/Conference/Submission{sub_number}/-/Official_Review")
+            invitations.append(f"{prefix}/{year}/Conference/Paper{sub_number}/-/Official_Review")
+        # Wildcard fallback (may not work on newer API)
+        invitations.append(f"{prefix}/{year}/Conference/Submission.*/-/Official_Review")
+        invitations.append(f"{prefix}/{year}/Conference/Paper.*/-/Official_Review")
+        return invitations
 
-    def _decision_invitation(self, venue: str, year: int) -> str:
-        venue_map = {
-            "iclr": f"ICLR.cc/{year}/Conference/.*/-/Decision",
-            "neurips": f"NeurIPS.cc/{year}/Conference/.*/-/Decision",
-        }
-        return venue_map.get(venue, f"{venue}/{year}/.*/-/Decision")
+    def _decision_invitations(self, venue: str, year: int, sub_number: int | None = None) -> list[str]:
+        """Build decision invitation strings. Uses exact submission number when available."""
+        prefix = self._venue_prefix(venue)
+        invitations = []
+        if sub_number is not None:
+            invitations.append(f"{prefix}/{year}/Conference/Submission{sub_number}/-/Decision")
+            invitations.append(f"{prefix}/{year}/Conference/Paper{sub_number}/-/Decision")
+        invitations.append(f"{prefix}/{year}/Conference/Submission.*/-/Decision")
+        invitations.append(f"{prefix}/{year}/Conference/Paper.*/-/Decision")
+        return invitations
+
+    def _venue_prefix(self, venue: str) -> str:
+        return {"iclr": "ICLR.cc", "neurips": "NeurIPS.cc"}.get(venue, venue.upper())
 
     # ── Caching / manifest ────────────────────────────────────────────────
 
@@ -277,22 +326,41 @@ def _extract_field(content: dict, key: str) -> str:
     """Extract a text field from OpenReview note content."""
     val = content.get(key, "")
     if isinstance(val, dict):
-        return str(val.get("value", ""))
+        val = val.get("value", "")
+    if isinstance(val, list):
+        return str(val)  # Caller should use _extract_list for list fields
     return str(val) if val else ""
 
 
+def _extract_list(content: dict, key: str) -> list:
+    """Extract a list field from OpenReview note content (e.g. authors)."""
+    val = content.get(key, [])
+    if isinstance(val, dict):
+        val = val.get("value", [])
+    if isinstance(val, list):
+        return val
+    return [str(val)] if val else []
+
+
 def _extract_score(scores: dict, field_names: list[str]) -> float | None:
-    """Extract a numeric score, trying multiple field names."""
+    """Extract a numeric score, trying multiple field names.
+
+    Handles formats like: 8, "8: Strong Accept", "2 fair", "3: reject, not good enough"
+    """
     for name in field_names:
         val = scores.get(name)
-        if val is not None:
-            try:
-                # Handle strings like "8: Strong Accept"
-                if isinstance(val, str):
-                    val = val.split(":")[0].strip()
-                return float(val)
-            except (ValueError, TypeError):
-                continue
+        if val is None:
+            continue
+        if isinstance(val, (int, float)):
+            return float(val)
+        if isinstance(val, str):
+            # Try splitting on ":" first ("8: Strong Accept")
+            # then on space ("2 fair"), then leading digits
+            for sep in [":", " "]:
+                try:
+                    return float(val.split(sep)[0].strip())
+                except (ValueError, TypeError):
+                    continue
     return None
 
 

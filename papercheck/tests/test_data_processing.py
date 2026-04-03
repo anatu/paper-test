@@ -8,7 +8,11 @@ from pathlib import Path
 import pytest
 
 from papercheck.reward_model.data_ingestion import ReviewRecord, SubmissionRecord, VenueData
-from papercheck.reward_model.data_processing import ReviewDataProcessor
+from papercheck.reward_model.data_processing import (
+    ReviewDataProcessor,
+    load_processed_dataset,
+    load_splits,
+)
 
 
 @pytest.fixture
@@ -157,3 +161,32 @@ class TestSplits:
         # Train should be the majority
         assert len(splits.train) > len(splits.val)
         assert len(splits.train) > len(splits.test)
+
+
+class TestSaveLoad:
+    def test_save_and_load_processed(self, processor, sample_venue_data, tmp_path):
+        """Should round-trip processed dataset through JSONL."""
+        dataset = processor.process_venue(sample_venue_data)
+        processor.save_processed(dataset, tmp_path)
+
+        loaded = load_processed_dataset(tmp_path)
+        assert len(loaded.papers) == len(dataset.papers)
+        assert loaded.papers[0].title == dataset.papers[0].title
+
+    def test_save_and_load_splits(self, processor, sample_venue_data, tmp_path):
+        """Should round-trip train/val/test splits through JSONL."""
+        dataset = processor.process_venue(sample_venue_data)
+        splits = processor.create_splits(dataset)
+        processor.save_splits(splits, tmp_path)
+
+        loaded = load_splits(tmp_path)
+        assert len(loaded.train) == len(splits.train)
+        assert len(loaded.val) == len(splits.val)
+        assert len(loaded.test) == len(splits.test)
+
+    def test_load_missing_raises(self, tmp_path):
+        """Should raise FileNotFoundError for missing data."""
+        with pytest.raises(FileNotFoundError):
+            load_processed_dataset(tmp_path)
+        with pytest.raises(FileNotFoundError):
+            load_splits(tmp_path)

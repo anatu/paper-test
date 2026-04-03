@@ -31,16 +31,26 @@ class PaperRewardModel(nn.Module if HAS_TORCH else object):
     """Multi-head regression model predicting peer review scores.
 
     Architecture:
-        Paper text -> SPECTER2 encoder -> [CLS] (768-d)
+        Paper text -> SciBERT encoder -> [CLS] (768-d)
         Concat with structural features (10-d) -> 778-d
         Shared projection: Linear(778, 256) + ReLU + Dropout
         Per-dimension heads: Linear(256, 1) + Sigmoid -> [0, 1]
     """
 
-    def __init__(self, backbone: str = "allenai/specter2", dropout: float = 0.1):
+    # SPECTER2 is an adapter repo without a standalone model config.
+    # Map to the underlying SciBERT checkpoint that HF can load directly.
+    _MODEL_MAP: dict[str, str] = {
+        "allenai/specter2": "allenai/scibert_scivocab_uncased",
+    }
+
+    def __init__(self, backbone: str = "allenai/specter2", dropout: float = 0.1, freeze_encoder: bool = False):
         _check_torch()
         super().__init__()
-        self.encoder = AutoModel.from_pretrained(backbone)
+        resolved = self._MODEL_MAP.get(backbone, backbone)
+        self.encoder = AutoModel.from_pretrained(resolved)
+        if freeze_encoder:
+            for param in self.encoder.parameters():
+                param.requires_grad = False
         encoder_dim = self.encoder.config.hidden_size
 
         self.projection = nn.Sequential(

@@ -1,9 +1,11 @@
-# Default training config — requires GPU (A100/4090, 24GB VRAM)
+# Default training config — fine-tunes full encoder with discriminative LR
 backbone: "allenai/specter2"
 max_length: 512
 batch_size: 16
 gradient_accumulation_steps: 2
-learning_rate: 2.0e-5
+learning_rate: 2.0e-5        # heads + projection LR
+encoder_lr: 2.0e-6           # 10x lower for pretrained encoder
+freeze_encoder: false
 weight_decay: 0.01
 warmup_ratio: 0.1
 lr_scheduler: "cosine"

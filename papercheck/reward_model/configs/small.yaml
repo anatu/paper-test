@@ -16,7 +16,7 @@ loss_weights:
   presentation: 1.0
   contribution: 1.0
   accept_prob: 1.5
-device: "cpu"
+device: "auto"
 seed: 42
 output_dir: "models/reward_model"
 data_dir: "data/openreview/processed"

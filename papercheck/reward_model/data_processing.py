@@ -223,13 +223,72 @@ class ReviewDataProcessor:
         )
 
     def save_processed(self, dataset: ProcessedDataset, output_dir: Path) -> None:
-        """Save processed dataset to disk."""
+        """Save processed dataset to disk as all.jsonl."""
         output_dir.mkdir(parents=True, exist_ok=True)
-        for split_name, papers in [("all", dataset.papers)]:
-            path = output_dir / f"{split_name}.jsonl"
-            with open(path, "w") as f:
-                for p in papers:
-                    f.write(p.model_dump_json() + "\n")
+        _write_jsonl(output_dir / "all.jsonl", dataset.papers)
+        logger.info("Saved %d papers to %s/all.jsonl", len(dataset.papers), output_dir)
+
+    def save_splits(self, splits: TrainValTestSplit, output_dir: Path) -> None:
+        """Save train/val/test splits to disk."""
+        output_dir.mkdir(parents=True, exist_ok=True)
+        _write_jsonl(output_dir / "train.jsonl", splits.train)
+        _write_jsonl(output_dir / "val.jsonl", splits.val)
+        _write_jsonl(output_dir / "test.jsonl", splits.test)
+        logger.info(
+            "Saved splits: train=%d, val=%d, test=%d to %s",
+            len(splits.train), len(splits.val), len(splits.test), output_dir,
+        )
+
+
+def load_processed_dataset(data_dir: Path) -> ProcessedDataset:
+    """Load a processed dataset from all.jsonl."""
+    all_path = data_dir / "all.jsonl"
+    if not all_path.exists():
+        raise FileNotFoundError(f"No processed dataset at {all_path}")
+    papers = _read_jsonl(all_path)
+    return ProcessedDataset(papers=papers)
+
+
+def load_splits(data_dir: Path) -> TrainValTestSplit:
+    """Load train/val/test splits from JSONL files."""
+    train_path = data_dir / "train.jsonl"
+    val_path = data_dir / "val.jsonl"
+    test_path = data_dir / "test.jsonl"
+    if not train_path.exists():
+        raise FileNotFoundError(f"No splits found at {data_dir} (missing train.jsonl)")
+    return TrainValTestSplit(
+        train=_read_jsonl(train_path),
+        val=_read_jsonl(val_path),
+        test=_read_jsonl(test_path),
+    )
+
+
+def load_venue_data_from_disk(data_dir: Path, venue: str, year: int) -> VenueData:
+    """Load fetched VenueData from cached paper files on disk."""
+    venue_dir = data_dir / f"{venue}_{year}" / "papers"
+    if not venue_dir.exists():
+        raise FileNotFoundError(f"No fetched data at {venue_dir}")
+    papers = []
+    for f in sorted(venue_dir.glob("*.json")):
+        papers.append(SubmissionRecord.model_validate_json(f.read_text()))
+    total_reviews = sum(len(p.reviews) for p in papers)
+    return VenueData(venue=venue, year=year, papers=papers, total_reviews=total_reviews)
+
+
+def _write_jsonl(path: Path, papers: list[ProcessedPaper]) -> None:
+    with open(path, "w") as f:
+        for p in papers:
+            f.write(p.model_dump_json() + "\n")
+
+
+def _read_jsonl(path: Path) -> list[ProcessedPaper]:
+    papers = []
+    with open(path) as f:
+        for line in f:
+            line = line.strip()
+            if line:
+                papers.append(ProcessedPaper.model_validate_json(line))
+    return papers
 
 
 def _normalize(val: float | None, s_min: float, rng: float) -> float | None:
